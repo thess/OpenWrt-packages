@@ -8,8 +8,12 @@ jobs:
       - SDK_FILE: "openwrt-sdk-ar71xx-generic_gcc-7.3.0_musl.Linux-x86_64.tar.xz"
       - BRANCH: "master"
     steps:
+      - checkout:
+          path: ~/openwrt_packages
+
       - run:
           name: Check changes / verify commits
+          working_directory: ~/openwrt_packages
           command: |
              .circleci/check_changes.sh
 
@@ -22,9 +26,6 @@ jobs:
              gpg --with-fingerprint --verify sha256sums.asc sha256sums
              curl "$SDK_BASE_URL/$SDK_FILE" -sS -o "$SDK_FILE"
              sha256sum -c --ignore-missing sha256sums
-
-      - checkout:
-          path: ~/openwrt_packages
 
       - run:
           name: Prepare build_dir
