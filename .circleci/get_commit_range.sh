@@ -2,7 +2,6 @@
 # Check CIRCLE_COMPARE_URL first and if its not set, check for diff with master.
 
 echo "CIRCLE_COMPARE_URL":
-echo "$CIRCLE_COMPARE_URL"
 
 if [[ ! -z "$CIRCLE_COMPARE_URL" ]]; then
     # CIRCLE_COMPARE_URL is not empty, use it to get the diff
@@ -11,14 +10,17 @@ if [[ ! -z "$CIRCLE_COMPARE_URL" ]]; then
     else
         COMMIT_RANGE=$(echo $CIRCLE_COMPARE_URL | sed 's:^.*/compare/::g')
     fi
-    echo "Diff: $COMMIT_RANGE"
+    echo_blue "Diff: $COMMIT_RANGE"
     changes="$(git diff $COMMIT_RANGE --name-only)"
 else
-    # CIRCLE_COMPARE_URL is not set, diff with origin/master
-    echo "Diff: origin/master..HEAD"
-    changes="$(git diff-tree --no-commit-id --name-only -r origin/master..HEAD)"
+    # CIRCLE_COMPARE_URL is not set, diff with origin/$BRANCH
+    COMMIT_RANGE=origin/$BRANCH..HEAD
+    echo_blue "Diff: origin/$BRANCH..HEAD"
+    changes="$(git diff-tree --no-commit-id --name-only -r $COMMIT_RANGE)"
 fi
 
-echo "Changes in this build:"
-echo $changes
+echo_blue "Changes in this build:"
+echo_blue $changes
 echo
+# Return commit range
+echo "export 'COMMIT_RANGE=$COMMIT_RANGE' >> $BASH_ENV
