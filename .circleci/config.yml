@@ -20,12 +20,13 @@ jobs:
              echo_green() { printf "\033[1;32m$*\033[m\n"; }
              echo_blue()  { printf "\033[1;34m$*\033[m\n"; }
              EOF
+             source $BASH_ENV
 
              # Figure out commit_range ($COMMIT_RANGE returned)
              .circleci/get_commit_range.sh
 
              RET=0
-             for commit in $(git rev-list ${COMMIT_RANGE/.../..}); do
+             for commit in $(git rev-list $COMMIT_RANGE); do
                echo_blue "=== Checking commit '$commit'"
                if git show --format='%P' -s $commit | grep -qF ' '; then
                  echo_red "Pull request should not include merge commits"
@@ -58,7 +59,7 @@ jobs:
                fi
              done
 
-             return $RET
+             exit $RET
 
       - run:
           name: Download the SDK
@@ -94,7 +95,7 @@ jobs:
              PKGS=$(cd ~/openwrt_packages; git diff --diff-filter=d --name-only "$COMMIT_RANGE" | grep 'Makefile$' | grep -v '/files/' | awk -F/ '{ print $(NF-1) }')
              if [ -z "$PKGS" ] ; then
                  echo_blue "WARNING: No new or modified packages found!"
-                 return 0
+                 exit 0
              fi
 
              echo_blue "=== Found new/modified packages: $PKGS"
