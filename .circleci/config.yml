@@ -56,9 +56,9 @@ jobs:
                echo_red "Signed-off-by is missing or doesn't match author (should be '$sob')"
                RET=1
              fi
-	done
+        done
 
-	return $RET
+        return $RET
 
       - run:
           name: Download the SDK
