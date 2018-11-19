@@ -24,6 +24,7 @@ jobs:
 
              # Figure out commit_range ($COMMIT_RANGE returned)
              .circleci/get_commit_range.sh
+             source $BASH_ENV
 
              RET=0
              for commit in $(git rev-list $COMMIT_RANGE); do

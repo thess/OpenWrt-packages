@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 # Check CIRCLE_COMPARE_URL first and if its not set, check for diff with master.
 
+source $BASH_ENV
+echo ====== $BASH_ENV =========
+cat $BASH_ENV
+echo ==========================
+
 echo_blue "checking CIRCLE_COMPARE_URL":
 echo_blue "=== $CIRCLE_COMPARE_URL"
 
