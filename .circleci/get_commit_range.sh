@@ -2,9 +2,7 @@
 # Check CIRCLE_COMPARE_URL first and if its not set, check for diff with master.
 
 source $BASH_ENV
-echo ====== $BASH_ENV =========
-cat $BASH_ENV
-echo ==========================
+echo "BRANCH=$BRANCH"
 
 echo_blue "checking CIRCLE_COMPARE_URL":
 echo_blue "=== $CIRCLE_COMPARE_URL"
@@ -19,9 +17,9 @@ if [[ ! -z "$CIRCLE_COMPARE_URL" ]]; then
     echo_blue "Diff: $COMMIT_RANGE"
     changes="$(git diff $COMMIT_RANGE --name-only)"
 else
-    # CIRCLE_COMPARE_URL is not set, diff with origin/$BRANCH
-    COMMIT_RANGE=origin/$BRANCH..HEAD
-    echo_blue "Diff: origin/$BRANCH..HEAD"
+    # CIRCLE_COMPARE_URL is not set, diff with origin/HEAD
+    COMMIT_RANGE=origin/HEAD...
+    echo_blue "Diff: origin/HEAD..."
     changes="$(git diff-tree --no-commit-id --name-only -r $COMMIT_RANGE)"
 fi
 

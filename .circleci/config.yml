@@ -16,13 +16,17 @@ jobs:
           working_directory: ~/openwrt_packages
           command: |
              cat >> $BASH_ENV <<EOF
-             echo_red()   { printf "\033[1;31m$*\033[m\n"; }
-             echo_green() { printf "\033[1;32m$*\033[m\n"; }
-             echo_blue()  { printf "\033[1;34m$*\033[m\n"; }
+             echo_red()   { printf "\033[1;31m\$*\033[m\n"; }
+             echo_green() { printf "\033[1;32m\$*\033[m\n"; }
+             echo_blue()  { printf "\033[1;34m\$*\033[m\n"; }
              EOF
              source $BASH_ENV
 
              # Figure out commit_range ($COMMIT_RANGE returned)
+             echo_blue "CIRCLE_COMPARE_URL = $CIRCLE_COMPARE_URL"
+             echo_blue "CIRCLE_PULL_REQUESTS = $CIRCLE_PULL_REQUESTS"
+             echo_blue "CIRCLE_SHA1 = $CIRCLE_SHA1"
+
              .circleci/get_commit_range.sh
              source $BASH_ENV
 
