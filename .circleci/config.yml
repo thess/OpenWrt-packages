@@ -28,7 +28,7 @@ jobs:
              echo_blue "CIRCLE_SHA1 = $CIRCLE_SHA1"
 
              .circleci/get_commit_range.sh
-             source $BASH_ENV
+             echo_blue "COMMIT_RANGE = $COMMIT_RANGE"
 
              RET=0
              for commit in $(git rev-list $COMMIT_RANGE); do

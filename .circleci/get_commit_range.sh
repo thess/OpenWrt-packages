@@ -18,9 +18,9 @@ if [[ ! -z "$CIRCLE_COMPARE_URL" ]]; then
     changes="$(git diff $COMMIT_RANGE --name-only)"
 else
     # CIRCLE_COMPARE_URL is not set, diff with origin/HEAD
-    COMMIT_RANGE=origin/HEAD...
-    echo_blue "Diff: origin/HEAD..."
-    changes="$(git diff-tree --no-commit-id --name-only -r $COMMIT_RANGE)"
+    COMMIT_RANGE=$CIRCLE_SHA1..$CIRCLE_SHA1
+    echo_blue "Diff: $CIRCLE_SHA1"
+    changes="$(git diff-tree --no-commit-id --name-only -r $CIRCLE_SHA1)"
 fi
 
 echo_blue "Changes in this build:"
@@ -28,3 +28,5 @@ echo_blue $changes
 echo
 # Return commit range
 echo 'export COMMIT_RANGE=$COMMIT_RANGE' >> $BASH_ENV
+export COMMIT_RANGE=$COMMIT_RANGE
+
