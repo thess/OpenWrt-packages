@@ -2,10 +2,9 @@
 # Check CIRCLE_COMPARE_URL first and if its not set, check for diff with master.
 
 source $BASH_ENV
-echo "BRANCH=$BRANCH"
 
 echo_blue "checking CIRCLE_COMPARE_URL":
-echo_blue "=== $CIRCLE_COMPARE_URL"
+echo_blue "=== '$CIRCLE_COMPARE_URL'"
 
 if [[ ! -z "$CIRCLE_COMPARE_URL" ]]; then
     # CIRCLE_COMPARE_URL is not empty, use it to get the diff
@@ -28,5 +27,4 @@ echo_blue $changes
 echo
 # Return commit range
 echo 'export COMMIT_RANGE=$COMMIT_RANGE' >> $BASH_ENV
-export COMMIT_RANGE=$COMMIT_RANGE
 
