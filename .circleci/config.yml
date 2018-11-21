@@ -23,11 +23,9 @@ jobs:
              source $BASH_ENV
 
              # Figure out commit_range ($COMMIT_RANGE returned)
-             echo_blue "CIRCLE_COMPARE_URL = $CIRCLE_COMPARE_URL"
-             echo_blue "CIRCLE_PULL_REQUESTS = $CIRCLE_PULL_REQUESTS"
-             echo_blue "CIRCLE_SHA1 = $CIRCLE_SHA1"
-
              .circleci/get_commit_range.sh
+             echo $BASH_ENV
+             cat $BASH_ENV
              source $BASH_ENV
              echo_blue "COMMIT_RANGE = $COMMIT_RANGE"
 
