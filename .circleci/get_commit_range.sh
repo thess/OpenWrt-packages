@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Check CIRCLE_COMPARE_URL first and if its not set, check for diff with target branch.
 
+set -o pipefail
+
 source $BASH_ENV
 
 if [[ ! -z "$CIRCLE_COMPARE_URL" ]]; then
@@ -23,6 +25,4 @@ echo_blue "Changes in this build:"
 echo_blue $changes
 echo
 # Return commit range
-echo $BASH_ENV
-echo 'export COMMIT_RANGE="$commit_range"' >> $BASH_ENV
-cat $BASH_ENV
+echo "export COMMIT_RANGE=$commit_range" >> $BASH_ENV
