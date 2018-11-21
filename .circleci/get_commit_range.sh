@@ -14,7 +14,7 @@ if [[ ! -z "$CIRCLE_COMPARE_URL" ]]; then
     changes="$(git diff $COMMIT_RANGE --name-only)"
 else
     # CIRCLE_COMPARE_URL is not set, diff with $BRANCH/HEAD
-    COMMIT_RANGE="$BRANCH..$CIRCLE_SHA1"
+    COMMIT_RANGE="origin/$BRANCH..$CIRCLE_SHA1"
     echo_blue "Diff: $COMMIT_RANGE"
     changes="$(git diff-tree --no-commit-id --name-only -r $COMMIT_RANGE)"
 fi
