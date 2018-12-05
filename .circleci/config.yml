@@ -2,11 +2,11 @@ version: 2.0
 jobs:
   build:
     docker:
-      - image: docker.io/champtar/openwrtpackagesci@sha256:96ef72edc70cba371ea5676fba15ee25b3a94f538f648a27454b699edce61da0
+      - image: docker.io/openwrtorg/packages-cci:v1.0.1
     environment:
       - SDK_BASE_URL: "https://downloads.openwrt.org/snapshots/targets/ar71xx/generic"
       - SDK_FILE: "openwrt-sdk-ar71xx-generic_gcc-7.3.0_musl.Linux-x86_64.tar.xz"
-      - BRANCH: "master"
+      - BRANCH: "cci-testing"
     steps:
       - checkout:
           path: ~/openwrt_packages
@@ -74,9 +74,9 @@ jobs:
           command: |
              tar Jxf ~/sdk/$SDK_FILE --strip=1
              cat > feeds.conf <<EOF
-             src-git base https://github.com/openwrt/openwrt.git;$BRANCH
+             src-git base https://github.com/openwrt/openwrt.git
              src-link packages $HOME/openwrt_packages
-             src-git luci https://github.com/openwrt/luci.git;$BRANCH
+             src-git luci https://github.com/openwrt/luci.git
              EOF
              cat feeds.conf
              # enable BUILD_LOG
