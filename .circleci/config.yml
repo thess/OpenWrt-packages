@@ -80,13 +80,13 @@ jobs:
              EOF
              cat feeds.conf
              # enable BUILD_LOG
-             sed -i '1s/^/config BUILD_LOG\n\tbool\n\tdefault y\n\n/' Config-build.in
+             sed -i 's/mainmenu.*/&\n\nconfig BUILD_LOG\n\tbool\n\tdefault y/' Config.in
              ./scripts/feeds update -a > /dev/null
              ./scripts/feeds install -a > /dev/null
              make defconfig > /dev/null
 
       - run:
-          name: Download source/check/compile
+          name: Download source, check HASH, compile
           working_directory: ~/build_dir
           command: |
              set +o pipefail
@@ -98,9 +98,22 @@ jobs:
 
              echo_blue "=== Found new/modified packages: $PKGS"
              for PKG in $PKGS ; do
-                 echo_blue "===+ Download/check: $PKG"
+                 echo_blue "===+ Download: $PKG"
                  make "package/$PKG/download" V=s
-                 make "package/$PKG/check" V=s
+
+                 echo_blue "===+ HASH check: $PKG"
+                 make "package/$PKG/check" V=s 2>&1 | tee logtmp
+                 RET=${PIPESTATUS[0]}
+
+                 if [ $RET -ne 0 ]; then
+                     echo_red   "=> HASH check failed: $RET)"
+                     exit $RET
+                 fi
+                 if grep -qE "^WARNING:" logtmp; then
+                     echo_red   "=> HASH check failed"
+                     exit 1
+                 fi
+                 echo_green "=> HASH check OK"
              done
 
              for PKG in $PKGS ; do
