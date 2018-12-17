@@ -78,8 +78,8 @@ jobs:
              src-git base https://github.com/openwrt/openwrt.git
              src-link packages $HOME/openwrt_packages
              src-git luci https://github.com/openwrt/luci.git
-             src-git routing https://github.com/openwrt/routing.git
-             src-git telephony https://github.com/openwrt/telephony.git
+             src-git routing https://git.openwrt.org/feed/routing.git
+             src-git telephony https://git.openwrt.org/feed/telephony.git
              EOF
              cat feeds.conf
              ./scripts/feeds update -a > /dev/null
